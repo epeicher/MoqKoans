@@ -32,29 +32,29 @@ namespace MoqKoans
 		public void VariablesStartAsNull()
 		{
 			IVolume volume = null;
-			Assert.AreEqual(___, volume == null);
+			Assert.AreEqual(true, volume == null);
 		}
 
 		[TestMethod]
 		public void AnInstanceOfVolumeIsAlsoAnIVolume()
 		{
 			var volume = new Volume();
-			Assert.AreEqual(___, volume is IVolume);
+			Assert.AreEqual(true, volume is IVolume);
 		}
 
 		[TestMethod]
 		public void AMockOfIVolumeIsNotAnIVolume()
 		{
 			var volume = new Moq.Mock<IVolume>();
-			Assert.AreEqual(___, volume is IVolume);
-			Assert.IsTrue(volume is ___);
+			Assert.AreEqual(false, volume is IVolume);
+			Assert.IsTrue(volume is Moq.Mock<IVolume>);
 		}
 
 		[TestMethod]
 		public void TheObjectPropertyOfAMockReturnsAnInstanceThatImplementsTheMockedInterface()
 		{
 			var volume = new Moq.Mock<IVolume>();
-			Assert.AreEqual(___, volume.Object is IVolume);
+			Assert.AreEqual(true, volume.Object is IVolume);
 		}
 
 		// IVolume was a public interface.
@@ -77,13 +77,13 @@ namespace MoqKoans
 				throwsException = true;
 			}
 
-			Assert.AreEqual(___, throwsException);
+			Assert.AreEqual(true, throwsException);
 		}
 
 		[TestMethod]
 		public void CreateANewMockOfIVolumeToMakeThisTestPass()
 		{
-			var mock = new ___();
+			var mock = new Moq.Mock<IVolume>();
 			Assert.IsInstanceOfType(mock, typeof(Moq.Mock<IVolume>));
 		}
 	}

@@ -22,7 +22,7 @@ namespace MoqKoans
 			// note that Vehicle is not an interface.
 			var mockVehicle = new Mock<Vehicle>();
 
-			Assert.AreEqual(___, mockVehicle.Object is Vehicle);
+			Assert.AreEqual(true, mockVehicle.Object is Vehicle);
 		}
 		
 		[TestMethod]
@@ -30,7 +30,7 @@ namespace MoqKoans
 		{
 			var mockVehicle = new Mock<Vehicle>();
 
-			Assert.AreEqual(___, mockVehicle.Object.GetHorsepower());
+			Assert.AreEqual(1001, mockVehicle.Object.GetHorsepower());
 		}
 		
 		[TestMethod]
@@ -38,7 +38,7 @@ namespace MoqKoans
 		{
 			var mockVehicle = new Mock<Vehicle>();
 
-			Assert.AreEqual(___, mockVehicle.Object.GetNumerOfWheels());
+			Assert.AreEqual(0, mockVehicle.Object.GetNumerOfWheels());
 		}
 
 		[TestMethod]
@@ -47,7 +47,7 @@ namespace MoqKoans
 			var mockVehicle = new Mock<Vehicle>();
 			mockVehicle.Setup(m => m.GetNumerOfWheels()).Returns(18);
 
-			Assert.AreEqual(___, mockVehicle.Object.GetNumerOfWheels());			
+			Assert.AreEqual(18, mockVehicle.Object.GetNumerOfWheels());			
 		}
 
 		[TestMethod]
@@ -63,7 +63,7 @@ namespace MoqKoans
 			{
 				exceptionWasThrown = true;
 			}
-			Assert.AreEqual(___, exceptionWasThrown);
+			Assert.AreEqual(true, exceptionWasThrown);
 		}
 
 		// An abstract class to test Moq with.
@@ -78,7 +78,7 @@ namespace MoqKoans
 		{
 			var mock = new Mock<Person>();
 
-			Assert.IsInstanceOfType(mock.Object, typeof(___));
+			Assert.IsInstanceOfType(mock.Object, typeof(Person));
 		}
 
 		[TestMethod]
@@ -86,7 +86,7 @@ namespace MoqKoans
 		{
 			var mock = new Mock<Person>(MockBehavior.Loose);
 
-			Assert.AreEqual(___, mock.Object.GetFirstName());
+			Assert.AreEqual(null, mock.Object.GetFirstName());
 		}
 
 		[TestMethod]
@@ -95,7 +95,7 @@ namespace MoqKoans
 			var mock = new Mock<Person>(MockBehavior.Strict);
 			mock.Setup(x => x.GetFirstName()).Returns("Fred");
 
-			Assert.AreEqual(___, mock.Object.GetFirstName());
+			Assert.AreEqual("Fred", mock.Object.GetFirstName());
 			var exceptionWasThrown = false;
 			try
 			{
@@ -105,15 +105,15 @@ namespace MoqKoans
 			{
 				exceptionWasThrown = true;
 			}
-			Assert.AreEqual(___, exceptionWasThrown);
+			Assert.AreEqual(true, exceptionWasThrown);
 		}
 
 		[TestMethod]
 		public void SetupAMockPersonWithTheNameJohnDoe()
 		{
 			var mock = new Mock<Person>(MockBehavior.Strict);
-			mock.___();
-			mock.___();
+			mock.Setup(x => x.GetFirstName()).Returns("John");
+			mock.Setup(x => x.GetLastName()).Returns("Doe");
 
 			var person = mock.Object;
 			Assert.AreEqual("John", person.GetFirstName());

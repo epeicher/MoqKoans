@@ -23,7 +23,7 @@ namespace MoqKoans
 
 			mock.Object.Name = "John";
 
-			mock.VerifySet(x => x.Name = "___");
+			mock.VerifySet(x => x.Name = "John");
 		}
 
 		[TestMethod]
@@ -31,7 +31,7 @@ namespace MoqKoans
 		{
 			var mock = new Mock<IPerson>();
 			mock.SetupProperty(x => x.Age, 24);
-
+            
 			var exceptionWasThrown = false;
 			try
 			{
@@ -41,7 +41,7 @@ namespace MoqKoans
 			{
 				exceptionWasThrown = true;
 			}
-			Assert.AreEqual(___, exceptionWasThrown);
+			Assert.AreEqual(true, exceptionWasThrown);
 		}
 
 		public static object BuyBeer(IPerson buyer)
@@ -52,11 +52,12 @@ namespace MoqKoans
 		[TestMethod]
 		public void WriteATestToEnsureTheBuyBeerMethodChecksThePersonsAge()
 		{
-			var mock = new ___();
+			var mock = new Mock<IPerson>();
+            mock.SetupGet<int>(x => x.Age);
 
 			BuyBeer(mock.Object);
 
-			mock.___(); // verify the user's age was checked.
+			mock.VerifyGet(x => x.Age, "The user's age was never checked."); // verify the user's age was checked.
 		}
 	}
 }

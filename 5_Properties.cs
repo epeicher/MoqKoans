@@ -20,14 +20,14 @@ namespace MoqKoans
 		{
 			var person = new Mock<IPerson>(MockBehavior.Loose).Object;
 
-			Assert.AreEqual(___, person.Name);
-			Assert.AreEqual(___, person.Age);
+			Assert.AreEqual(null, person.Name);
+			Assert.AreEqual(0, person.Age);
 
 			person.Name = "Joe";
 			person.Age = 36;
 
-			Assert.AreEqual(___, person.Name);
-			Assert.AreEqual(___, person.Age);
+			Assert.AreEqual(null, person.Name);
+			Assert.AreEqual(0, person.Age);
 		}
 
 		[TestMethod]
@@ -44,7 +44,7 @@ namespace MoqKoans
 			{
 				exceptionWasThrown = true;
 			}
-			Assert.AreEqual(___, exceptionWasThrown);
+			Assert.AreEqual(true, exceptionWasThrown);
 
 			exceptionWasThrown = false;
 			try
@@ -55,7 +55,7 @@ namespace MoqKoans
 			{
 				exceptionWasThrown = true;
 			}
-			Assert.AreEqual(___, exceptionWasThrown);
+			Assert.AreEqual(true, exceptionWasThrown);
 		}
 
 		[TestMethod]
@@ -67,14 +67,14 @@ namespace MoqKoans
 			mock.SetupProperty(x => x.Name);
 			mock.SetupProperty(x => x.Age);
 
-			Assert.AreEqual(___, person.Name);
-			Assert.AreEqual(___, person.Age);
+			Assert.AreEqual(null, person.Name);
+			Assert.AreEqual(0, person.Age);
 
 			person.Name = "Joe";
 			person.Age = 36;
 
-			Assert.AreEqual(___, person.Name);
-			Assert.AreEqual(___, person.Age);
+			Assert.AreEqual("Joe", person.Name);
+			Assert.AreEqual(36, person.Age);
 		}
 
 		[TestMethod]
@@ -86,14 +86,14 @@ namespace MoqKoans
 			mock.SetupProperty(x => x.Name, "Fred");
 			mock.SetupProperty(x => x.Age, 21);
 
-			Assert.AreEqual(___, person.Name);
-			Assert.AreEqual(___, person.Age);
+			Assert.AreEqual("Fred", person.Name);
+			Assert.AreEqual(21, person.Age);
 
 			person.Name = "Joe";
 			person.Age = 36;
 
-			Assert.AreEqual(___, person.Name);
-			Assert.AreEqual(___, person.Age);
+			Assert.AreEqual("Joe", person.Name);
+			Assert.AreEqual(36, person.Age);
 		}
 
 		[TestMethod]
@@ -107,8 +107,8 @@ namespace MoqKoans
 			person.Name = "Joe";
 			person.Age = 36;
 
-			Assert.AreEqual(___, person.Name);
-			Assert.AreEqual(___, person.Age);
+			Assert.AreEqual("Joe", person.Name);
+			Assert.AreEqual(36, person.Age);
 		}
 	}
 }

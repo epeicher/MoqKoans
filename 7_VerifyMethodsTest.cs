@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace MoqKoans
 {
@@ -54,19 +55,37 @@ namespace MoqKoans
 		[TestMethod]
 		public void Mute_DoesNotCallQuieter_WhenCurrentVolumeIsAlreadyZero()
 		{
-			throw new NotImplementedException(); // <-- replace this with your test code.
+            var mock = new Mock<IVolume>(MockBehavior.Strict);
+            mock.Setup(m => m.CurrentVolume()).Returns("0");
+            mock.Verify(x => x.Quieter(It.IsAny<int>()), Times.Never());
+            Mute(mock.Object);
 		}
 
 		[TestMethod]
 		public void Mute_CallsQuieterRepeatedly_UntilCurrentVolumeReturnsZero()
 		{
-			throw new NotImplementedException(); // <-- replace this with your test code.
+            var mock = new Mock<IVolume>();
+            var currentVolume = 48;
+            mock.Setup(m => m.CurrentVolume()).Returns(() => currentVolume.ToString());
+            mock.Setup(m => m.Quieter(It.IsAny<int>())).Returns<int>(p =>
+            {
+                currentVolume = currentVolume -= p;
+                if (currentVolume < 0)
+                    currentVolume = 0;
+                return currentVolume;
+            });
+            Mute(mock.Object);
+            mock.Verify(x => x.Quieter(It.IsAny<int>()), Times.Exactly(5));
+            Assert.AreEqual("0", mock.Object.CurrentVolume());
 		}
 
 		[TestMethod]
 		public void Mute_CallsQuieterNoMoreThanTenTimes_WhenCurrentVolumeNeverReturnsZero()
 		{
-			throw new NotImplementedException(); // <-- replace this with your test code.
+            var mock = new Mock<IVolume>();
+            mock.Setup(m => m.CurrentVolume()).Returns("1");
+            Mute(mock.Object);
+            mock.Verify(x => x.Quieter(It.IsAny<int>()), Times.Exactly(10));
 		}
 	}
 }

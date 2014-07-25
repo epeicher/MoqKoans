@@ -33,7 +33,7 @@ namespace MoqKoans
 			{
 				exceptionWasThrown = true;
 			}
-			Assert.AreEqual(___, exceptionWasThrown);
+			Assert.AreEqual(true, exceptionWasThrown);
 		}
 
 		[TestMethod]
@@ -52,9 +52,9 @@ namespace MoqKoans
 			catch (Exception ex)
 			{
 				exceptionWasThrown = true;
-				Assert.IsTrue(ex.Message.Contains("___"));
+                Assert.IsTrue(ex.Message.Contains("This message will be in the Exception if the method is not called."));
 			}
-			Assert.AreEqual(___, exceptionWasThrown);
+			Assert.AreEqual(true, exceptionWasThrown);
 		}
 
 		[TestMethod]
@@ -79,7 +79,7 @@ namespace MoqKoans
 
 			// Since the method is setup with .Verifiable(), and we did not call .Louder(), is an Exception thrown?
 			// Why or Why Not?
-			Assert.AreEqual(___, wasExceptionThrown);
+			Assert.AreEqual(false, wasExceptionThrown);
 		}
 
 		[TestMethod]
@@ -97,7 +97,7 @@ namespace MoqKoans
 
 			var volume = mock.Object;
 			volume.Quieter(100);
-			volume.____();
+			volume.Louder(1);
 
 			mock.Verify();
 		}
@@ -124,7 +124,7 @@ namespace MoqKoans
 				wasAnExceptionThrown = true;
 			}
 
-			Assert.AreEqual(___, wasAnExceptionThrown);
+			Assert.AreEqual(false, wasAnExceptionThrown);
 		}
 
 		[TestMethod]
@@ -143,7 +143,7 @@ namespace MoqKoans
 			{
 				wasAnExceptionThrown = true;
 			}
-			Assert.AreEqual(___, wasAnExceptionThrown);
+			Assert.AreEqual(true, wasAnExceptionThrown);
 		}
 
 		[TestMethod]
@@ -163,7 +163,7 @@ namespace MoqKoans
 				wasAnExceptionThrown = true;
 			}
 
-			Assert.AreEqual(___, wasAnExceptionThrown);	
+			Assert.AreEqual(true, wasAnExceptionThrown);	
 		}
 
 		[TestMethod]
@@ -172,8 +172,8 @@ namespace MoqKoans
 			var mock = new Mock<IVolume>();
 			var volume = mock.Object;
 
-			volume.____();
-			volume.____();
+			volume.Quieter(10);
+			volume.Quieter(25);
 
 			mock.Verify(x => x.Quieter(10), "Quieter should have been called with the value 10.");
 			mock.Verify(x => x.Quieter(It.Is<int>(p => p > 20 && p < 30)), "Quieter should have been called with a value between 20 and 30.");
@@ -198,7 +198,7 @@ namespace MoqKoans
 				wasAnExceptionThrown = true;
 			}
 
-			Assert.AreEqual(___, wasAnExceptionThrown);
+			Assert.AreEqual(true, wasAnExceptionThrown);
 		}
 
 		[TestMethod]
@@ -207,7 +207,9 @@ namespace MoqKoans
 			var mock = new Mock<IVolume>();
 			var volume = mock.Object;
 
-			volume.____();
+			volume.CurrentVolume();
+            volume.CurrentVolume();
+            volume.CurrentVolume();
 
 			mock.Verify(x => x.CurrentVolume(), Times.Exactly(3));
 		}
@@ -220,9 +222,9 @@ namespace MoqKoans
 
 			mock.Setup(x => x.Louder(It.IsAny<int>())).Returns<int>(p => p);
 
-			Assert.AreEqual(___, volume.Louder(22));
+			Assert.AreEqual(22, volume.Louder(22));
 
-			mock.Verify(x => x.Louder(____), Times.AtLeastOnce());
+			mock.Verify(x => x.Louder(22), Times.AtLeastOnce());
 		}
 	}
 }

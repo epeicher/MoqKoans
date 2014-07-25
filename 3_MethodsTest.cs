@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoqKoans.KoansHelpers;
+using Moq;
 
 namespace MoqKoans
 {
@@ -28,10 +29,31 @@ namespace MoqKoans
 			// The CurrentVolume() methoud should always return the internal volume level, as a string.
 			// If a negative number is passed to either Louder or Quieter, then it should throw an ArgumentOutOfRangeException.
 
-			var mock = new ___();
+			var mock = new Mock<IVolume>(MockBehavior.Strict);
 			// ...setup your mock here...
+            var currentVolume = 50;
+            mock.Setup(m => m.CurrentVolume()).Returns(() => currentVolume.ToString());
+            mock.Setup(m => m.Quieter(It.Is<int>(p => p < 0))).Throws(new ArgumentOutOfRangeException());
+            mock.Setup(m => m.Louder(It.Is<int>(p => p < 0))).Throws(new ArgumentOutOfRangeException());
+            mock.Setup(m => m.Quieter(It.Is<int>(p => p >= 0)))
+                .Returns<int>(p =>
+                {
+                    currentVolume -= p;
+                    if (currentVolume < 0) 
+                        currentVolume = 0;
+                    return currentVolume;
+                });
 
-			// Do not change these Asserts. Your setup mock should make all of these pass the way they are.
+            mock.Setup(m => m.Louder(It.Is<int>(p => p >= 0)))
+                .Returns<int>(p =>
+                {
+                    currentVolume += p;
+                    if (currentVolume > 100) 
+                        currentVolume = 100;
+                    return currentVolume;
+                });
+
+            // Do not change these Asserts. Your setup mock should make all of these pass the way they are.
 			var volume = mock.Object;
 			Assert.AreEqual("50", volume.CurrentVolume());
 			Assert.AreEqual(40, volume.Quieter(10));
